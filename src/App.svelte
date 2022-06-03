@@ -2,8 +2,11 @@
   import logo from './assets/svelte.png'
   import Counter from './components/Counter.svelte'
   import InfoPopover from './components/InfoPopover.svelte';
+import RoverManifest from './components/RoverManifest.svelte';
+import RoverSelect from './components/RoverSelect.svelte';
 
   let showInfo = false
+  let showManifest = false
 
   function toggleInfo(e: Event) {
     showInfo = !showInfo
@@ -11,6 +14,11 @@
 </script>
 
 <main>
+  <RoverSelect />
+  {#if showManifest}
+    <RoverManifest {showManifest} />
+  {/if}
+
   <button on:click={toggleInfo}>Open Popover</button>
 
   <!-- handle the forwarded event -->

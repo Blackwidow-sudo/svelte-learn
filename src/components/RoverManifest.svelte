@@ -1,17 +1,17 @@
 <script lang="ts">
-    export let name: string
+    import type { RoverName } from "src/types";
 
-    function handleChange(e: Event) {
-        const input_el = e.target as HTMLInputElement
+    export let showManifest
 
-        name = input_el.value
-    }
+    let selectedRover: RoverName
+
+    
 </script>
 
 <div class="rover-manifest">
-    <span>{name}</span>
-
-    <input type="text" name="nameInput" id="nameInput" on:input={handleChange}>
+    {#if showManifest}
+        <input type="number" min="0" />
+    {/if}
 </div>
 
 <style lang="scss">
