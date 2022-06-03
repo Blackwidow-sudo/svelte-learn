@@ -1,16 +1,12 @@
 <script lang="ts">
-    export let showInfo: boolean
-    export let msg: string
-
-    function handleClose(e: Event) {
-        
-    }
+    export let showPopover: boolean = false;
+    export let msg: string = 'No Message available';
 </script>
 
-{#if showInfo}
+{#if showPopover}
     <!-- Forward the Event to the Component that mounts this component -->
     <div class="info-popover" on:click>
-        <div id="message-box">{ msg }</div>
+        <div id="message-box">{msg}</div>
         <span>Click anywhere to close this message</span>
     </div>
 {/if}

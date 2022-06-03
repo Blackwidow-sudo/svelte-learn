@@ -1,28 +1,14 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import type { RoverName } from "src/types";
-    
-    import { roverNames } from "../globals"
-import RoverManifest from "./RoverManifest.svelte";
+    import type { RoverName } from 'src/types';
 
-    let selectedRover: RoverName
-
-    onMount(() => {
-        const select = document.querySelector("select") as HTMLSelectElement
-
-        roverNames.forEach((name: RoverName) => {
-            const option = document.createElement("option")
-
-            option.textContent = name
-            option.value = name.toLowerCase()
-
-            select.appendChild(option)
-        })
-    })
+    export let selectItems: RoverName[];
 </script>
 
-<select name="selectRover" id="selectRover">
+<select name="selectRover" id="selectRover" on:change>
     <option value="none" disabled selected>Select a Rover</option>
+    {#each selectItems as item}
+        <option value={item.toLowerCase()}>{item}</option>
+    {/each}
 </select>
 
 <style lang="scss">

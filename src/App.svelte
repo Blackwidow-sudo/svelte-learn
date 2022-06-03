@@ -1,34 +1,52 @@
 <script lang="ts">
-  import logo from './assets/svelte.png'
-  import Counter from './components/Counter.svelte'
-  import InfoPopover from './components/InfoPopover.svelte';
-import RoverManifest from './components/RoverManifest.svelte';
-import RoverSelect from './components/RoverSelect.svelte';
+    import type { RoverName } from './types';
+    import InfoPopover from './components/InfoPopover.svelte';
+    import RoverManifest from './components/RoverManifest.svelte';
+    import RoverSelect from './components/RoverSelect.svelte';
+    import { roverNames } from './globals';
 
-  let showInfo = false
-  let showManifest = false
+    let showPopover = false;
+    let roverName: RoverName;
 
-  function toggleInfo(e: Event) {
-    showInfo = !showInfo
-  }
+    const setRover = (e: Event) => {
+        const selectElem = e.target as HTMLSelectElement;
+        const selectedOption = selectElem.item(selectElem.selectedIndex);
+
+        roverName = selectedOption.value[0]
+            .toUpperCase()
+            .concat(selectedOption.value.substring(1)) as RoverName;
+    };
+
+    const togglePopover = (e: Event) => {
+        showPopover = !showPopover;
+    };
 </script>
 
 <main>
-  <RoverSelect />
-  {#if showManifest}
-    <RoverManifest {showManifest} />
-  {/if}
+    <RoverSelect selectItems={roverNames} on:change={setRover} />
 
-  <button on:click={toggleInfo}>Open Popover</button>
+    {#if roverName}
+        <RoverManifest {roverName} />
+    {/if}
 
-  <!-- handle the forwarded event -->
-  <InfoPopover {showInfo} msg="Hello From App" on:click={toggleInfo} />
+    <button on:click={togglePopover}>Open Popover</button>
+
+    <!-- handle the forwarded event -->
+    <InfoPopover {showPopover} msg="Hello From App" on:click={togglePopover} />
 </main>
 
 <style lang="scss">
-  $std-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  
-  :root {
-    font-family: $std-font;
-  }
+    $std-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+        Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    :root {
+        font-family: $std-font;
+    }
+
+    /* Temporary styles */
+    button {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
 </style>
