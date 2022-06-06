@@ -4,6 +4,7 @@
     import RoverManifest from './components/RoverManifest.svelte';
     import RoverSelect from './components/RoverSelect.svelte';
     import { roverNames } from './globals';
+    import { capitalize } from './lib/utils';
 
     let showPopover = false;
     let roverName: RoverName;
@@ -12,9 +13,7 @@
         const selectElem = e.target as HTMLSelectElement;
         const selectedOption = selectElem.item(selectElem.selectedIndex);
 
-        roverName = selectedOption.value[0]
-            .toUpperCase()
-            .concat(selectedOption.value.substring(1)) as RoverName;
+        roverName = capitalize(selectedOption.value) as RoverName;
     };
 
     const togglePopover = (e: Event) => {
@@ -23,15 +22,14 @@
 </script>
 
 <main>
-    <RoverSelect selectItems={roverNames} on:change={setRover} />
+    <RoverSelect availableRovers={roverNames} on:change={setRover} />
 
     {#if roverName}
         <RoverManifest {roverName} />
     {/if}
 
-    <button on:click={togglePopover}>Open Popover</button>
-
     <!-- handle the forwarded event -->
+    <button on:click={togglePopover}>Open Popover</button>
     <InfoPopover {showPopover} msg="Hello From App" on:click={togglePopover} />
 </main>
 

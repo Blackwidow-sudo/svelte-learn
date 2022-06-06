@@ -1,0 +1,36 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url("./src/assets/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+input {
+    border: 1px solid #8754da;
+    border-radius: 5px;
+    padding: 5px 10px;
+    line-height: 1rem;
+}
+
+input[type="button"],
+button {
+    background-color: #fff;
+}
+
+input[type="button"]:hover,
+button:hover {
+    cursor: pointer;
+    background-color: #eadcff;
+}

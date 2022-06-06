@@ -1,29 +1,79 @@
 <script lang="ts">
-    import type { RoverName } from 'src/types';
+    import type { RoverManifest, RoverName } from 'src/types';
+
+    import PhotoSearchForm from './PhotoSearchForm.svelte';
     import NasaAPI from '../lib/NasaAPI';
+    import { capitalize, SessionStore } from '../lib/utils';
+
+    const DEBUG = true;
 
     export let roverName: RoverName = undefined;
+
+    // Old technique without store
+    const getManifest = async (name: RoverName): Promise<RoverManifest> => {
+        let manifest = SessionStore.get(name);
+
+        if (manifest) {
+            DEBUG && console.log('Return Manifest from storage');
+            return manifest;
+        }
+
+        try {
+            manifest = await NasaAPI.fetchManifest(name);
+            SessionStore.set(manifest);
+
+            DEBUG && console.log('Return Manifest from API');
+            return manifest;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                console.error(error.message);
+            } else {
+                console.error(error);
+            }
+        }
+    };
+
+    // ManifestStore.subscribe((data: RoverManifest) => {
+    //     manifest = data;
+    // });
+
+    // onMount(async () => {
+    //     const tmp = SessionStore.get(roverName);
+
+    //     if (tmp) {
+    //         manifest = tmp;
+    //         console.log(`Got ${manifest.name} Manifest from sessionStorage.`);
+    //         return; // early
+    //     }
+
+    //     try {
+    //         manifest = await NasaAPI.fetchManifest(roverName);
+    //         console.log(`Got ${manifest.name} Manifest from API.`);
+    //     } catch (err: unknown) {
+    //         throw err;
+    //     }
+    // });
 </script>
 
-{#if roverName}
-    <div class="rover-manifest">
-        <h3>{roverName}</h3>
-        {#await NasaAPI.fetchManifest(roverName)}
-            <span>...waiting for Manifest</span>
-        {:then manifest}
-            <table>
-                {#each Object.entries(manifest) as [key, value]}
-                    {#if key !== 'photos'}
-                        <tr>
-                            <th>{key.replace('_', ' ')}</th>
-                            <td>{value}</td>
-                        </tr>
-                    {/if}
-                {/each}
-            </table>
-        {/await}
-    </div>
-{/if}
+<div class="rover-manifest">
+    <!-- If not stored, request it from NASA API -->
+    {#await getManifest(roverName)}
+        <span>...loading</span>
+    {:then manifest}
+        <h3>{capitalize(manifest.name)}</h3>
+        <table>
+            {#each Object.entries(manifest) as [key, value]}
+                {#if key !== 'photos'}
+                    <tr>
+                        <th>{capitalize(key).replace('_', ' ')}</th>
+                        <td>{value}</td>
+                    </tr>
+                {/if}
+            {/each}
+        </table>
+        <PhotoSearchForm {manifest} />
+    {/await}
+</div>
 
 <style lang="scss">
     .rover-manifest {

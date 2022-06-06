@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { RoverName } from 'src/types';
 
-    export let selectItems: RoverName[];
+    export let availableRovers: RoverName[];
 </script>
 
 <select name="selectRover" id="selectRover" on:change>
     <option value="none" disabled selected>Select a Rover</option>
-    {#each selectItems as item}
+    {#each availableRovers as item}
         <option value={item.toLowerCase()}>{item}</option>
     {/each}
 </select>
