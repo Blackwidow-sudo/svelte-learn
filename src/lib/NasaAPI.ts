@@ -2,13 +2,19 @@ import type { CamAbbr, Photo, RoverManifest, RoverName } from '../types';
 import { isArrOfPhotos, isManifest } from './typeGuards';
 
 export default class NasaAPI {
-    private static _apiKey = 'api_key=DEMO_KEY';
+    private static _demoKey = 'DEMO_KEY';
     private static _baseUrl = 'https://api.nasa.gov/mars-photos/api/v1';
     private static _roversUrl = this._baseUrl.concat('/rovers');
     private static _manifestsUrl = this._baseUrl.concat('/manifests');
 
-    public static async fetchManifest(roverName: RoverName): Promise<RoverManifest> {
-        const reqParams = [`/${roverName.toLowerCase()}`, `?${this._apiKey}`];
+    public static async fetchManifest(roverName: RoverName, apiKey?: string): Promise<RoverManifest> {
+        const reqParams = [`/${roverName.toLowerCase()}`];
+
+        if (typeof apiKey !== undefined) {
+            reqParams.push(`?api_key=${apiKey}`)
+        } else {
+            reqParams.push(`?api_key=${this._demoKey}`)
+        }
 
         try {
             const response = await fetch(this._manifestsUrl.concat(...reqParams));
@@ -28,7 +34,8 @@ export default class NasaAPI {
         roverName: RoverName,
         cam: CamAbbr,
         solOrDate: number | string,
-        page: number = 1
+        page: number = 1,
+        apiKey?: string
     ): Promise<Photo[] | undefined> {
         const reqParams = [`/${roverName}/photos`];
 
@@ -40,9 +47,15 @@ export default class NasaAPI {
             throw new Error('The given Sol/Date is not valid.');
         }
 
+        if (typeof apiKey !== undefined) {
+            reqParams.push(`&api_key=${apiKey}`)
+        } else {
+            reqParams.push(`&api_key=${this._demoKey}`)
+        }
+
         reqParams.push(`&camera=${cam}`);
         reqParams.push(`&page=${page}`);
-        reqParams.push(`&${this._apiKey}`);
+        reqParams.push(`&${this._demoKey}`);
 
         try {
             const response = await fetch(this._roversUrl.concat(...reqParams));

@@ -58,5 +58,6 @@
 
     #day-input {
         text-align: center;
+        letter-spacing: .2rem;
     }
 </style>

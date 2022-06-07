@@ -72,6 +72,8 @@
             {/each}
         </table>
         <PhotoSearchForm {manifest} />
+    {:catch error}
+        <span>{error.message}</span>
     {/await}
 </div>
 
@@ -85,6 +87,11 @@
 
         h3 {
             text-align: center;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 1rem;
         }
 
         tr {
