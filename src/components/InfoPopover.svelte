@@ -6,7 +6,10 @@
 {#if showPopover}
     <!-- Forward the Event to the Component that mounts this component -->
     <div class="info-popover" on:click>
-        <div id="message-box">{msg}</div>
+        <div id="message-box">
+            <h3>Info</h3>
+            <p>{msg}</p>
+        </div>
         <span>Click anywhere to close this message</span>
     </div>
 {/if}
@@ -34,6 +37,18 @@
         span {
             padding: 5px 10px;
             background-color: #000;
+        }
+    }
+
+    #message-box {
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background: var(--info-msg-bg, #fff);
+        color: var(--info-msg-color, #000);
+
+        h3 {
+            text-align: center;
         }
     }
 </style>

@@ -1,13 +1,22 @@
 <script lang="ts">
     import type { RoverManifest, RoverName } from 'src/types';
 
+    import { createEventDispatcher } from 'svelte';
+
     import PhotoSearchForm from './PhotoSearchForm.svelte';
     import NasaAPI from '../lib/NasaAPI';
     import { capitalize, SessionStore } from '../lib/utils';
 
     const DEBUG = true;
 
-    export let roverName: RoverName = undefined;
+    export let roverName: RoverName;
+
+    const dispatch = createEventDispatcher()
+    const sendError = (msg: string) => {
+        dispatch("message", {
+            text: msg
+        })
+    }
 
     // Old technique without store
     const getManifest = async (name: RoverName): Promise<RoverManifest> => {
@@ -26,10 +35,11 @@
             return manifest;
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error(error.message);
+                console.error(error.message)
             } else {
-                console.error(error);
+                console.error(error)
             }
+            sendError("Could not fetch Manifest from the NASA API.")
         }
     };
 
@@ -71,9 +81,7 @@
                 {/if}
             {/each}
         </table>
-        <PhotoSearchForm {manifest} />
-    {:catch error}
-        <span>{error.message}</span>
+        <PhotoSearchForm {manifest} on:message/>
     {/await}
 </div>
 
