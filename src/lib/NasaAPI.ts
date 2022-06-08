@@ -10,7 +10,7 @@ export default class NasaAPI {
     public static async fetchManifest(roverName: RoverName, apiKey?: string): Promise<RoverManifest> {
         const reqParams = [`/${roverName.toLowerCase()}`];
 
-        if (typeof apiKey !== undefined) {
+        if (typeof apiKey !== "undefined") {
             reqParams.push(`?api_key=${apiKey}`)
         } else {
             reqParams.push(`?api_key=${this._demoKey}`)
@@ -47,7 +47,7 @@ export default class NasaAPI {
             throw new Error('The given Sol/Date is not valid.');
         }
 
-        if (typeof apiKey !== undefined) {
+        if (typeof apiKey !== "undefined") {
             reqParams.push(`&api_key=${apiKey}`)
         } else {
             reqParams.push(`&api_key=${this._demoKey}`)
