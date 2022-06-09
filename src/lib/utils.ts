@@ -1,25 +1,25 @@
 import type { RoverManifest, RoverName } from 'src/types';
-import { isManifest } from './typeGuards';
+import { isArrayOfCameras, isManifest } from './typeGuards';
 import { cameraDescriptions, availableCams } from '../globals';
 
-function getRoverCams(name: RoverName): {[camAbbr: string]: string} {
-    const err = new Error("No Cams available for the given RoverName.")
-    const roverCams = {}
-    const availCams = availableCams[name.toLowerCase()]
+function getRoverCams(name: RoverName): { [camAbbr: string]: string } {
+    const err = new Error('No Cams available for the given RoverName.');
+    const roverCams = {};
+    const availCams = availableCams[name.toLowerCase()];
 
-    if (typeof availCams === "undefined" || availCams.length === 0) {
-        throw err
+    if (!isArrayOfCameras(availCams)) {
+        throw err;
     }
-    
-    availCams.forEach(cam => {
-        roverCams[cam] = cameraDescriptions[cam]
-    })
+
+    availCams.forEach((cam) => {
+        roverCams[cam] = cameraDescriptions[cam];
+    });
 
     if (Object.keys(roverCams).length === 0) {
-        throw err
+        throw err;
     }
 
-    return roverCams
+    return roverCams;
 }
 
 function capitalize(str: string) {
