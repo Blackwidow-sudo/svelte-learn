@@ -1,8 +1,12 @@
 <script lang="ts">
-    import type { RoverManifest } from 'src/types';
+    import type { RoverManifest } from '../types';
+    import CameraSelector from './CameraSelector.svelte';
     import DayInput from './DayInput.svelte';
+    import { getRoverCams } from '../lib/utils';
 
     export let manifest: RoverManifest;
+
+    let roverCameras = getRoverCams(manifest.name);
 </script>
 
 <div class="form">
@@ -10,6 +14,7 @@
 
     <label for="pages"> Pages (25 items per page): </label>
     <input type="number" min="0" max="10" id="pages" placeholder="1" value="1" />
+    <CameraSelector {roverCameras} />
 
     <input type="button" name="submit" id="submit" value="Search Photos" />
 </div>

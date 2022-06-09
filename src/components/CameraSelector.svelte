@@ -1,13 +1,11 @@
 <script lang="ts">
-    import type { CamAbbr } from 'src/types';
-
-    export let availableCameras: CamAbbr[];
+    export let roverCameras: { [abbr: string]: string };
 </script>
 
 <select name="camera" id="camera" on:change>
     <option value="none" disabled selected>Select a Camera</option>
-    {#each availableCameras as camera}
-        <option value={camera.toLowerCase()}>{camera}</option>
+    {#each Object.entries(roverCameras) as [camera, description]}
+        <option value={camera.toLowerCase()} title={description}>{camera}</option>
     {/each}
 </select>
 
