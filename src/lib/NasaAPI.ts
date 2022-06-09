@@ -7,13 +7,16 @@ export default class NasaAPI {
     private static _roversUrl = this._baseUrl.concat('/rovers');
     private static _manifestsUrl = this._baseUrl.concat('/manifests');
 
-    public static async fetchManifest(roverName: RoverName, apiKey?: string): Promise<RoverManifest> {
+    public static async fetchManifest(
+        roverName: RoverName,
+        apiKey?: string
+    ): Promise<RoverManifest> {
         const reqParams = [`/${roverName.toLowerCase()}`];
 
-        if (typeof apiKey !== "undefined") {
-            reqParams.push(`?api_key=${apiKey}`)
+        if (typeof apiKey !== 'undefined') {
+            reqParams.push(`?api_key=${apiKey}`);
         } else {
-            reqParams.push(`?api_key=${this._demoKey}`)
+            reqParams.push(`?api_key=${this._demoKey}`);
         }
 
         try {
@@ -47,10 +50,10 @@ export default class NasaAPI {
             throw new Error('The given Sol/Date is not valid.');
         }
 
-        if (typeof apiKey !== "undefined") {
-            reqParams.push(`&api_key=${apiKey}`)
+        if (typeof apiKey !== 'undefined') {
+            reqParams.push(`&api_key=${apiKey}`);
         } else {
-            reqParams.push(`&api_key=${this._demoKey}`)
+            reqParams.push(`&api_key=${this._demoKey}`);
         }
 
         reqParams.push(`&camera=${cam}`);

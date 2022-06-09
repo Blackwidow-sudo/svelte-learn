@@ -3,12 +3,12 @@
     import { createEventDispatcher } from 'svelte';
     import InfoPopover from './components/InfoPopover.svelte';
     import RoverManifest from './components/RoverManifest.svelte';
-    import RoverSelect from './components/RoverSelect.svelte';
+    import RoverSelector from './components/RoverSelector.svelte';
     import { roverNames } from './globals';
     import { capitalize } from './lib/utils';
 
     let showPopover = false;
-    let popoverMessage: string
+    let popoverMessage: string;
 
     let roverName: RoverName;
 
@@ -24,13 +24,13 @@
     };
 
     const handleMessage = (e: CustomEvent) => {
-        popoverMessage = e.detail.text
-        togglePopover(e)
-    }
+        popoverMessage = e.detail.text;
+        togglePopover(e);
+    };
 </script>
 
 <main>
-    <RoverSelect availableRovers={roverNames} on:change={setRover} />
+    <RoverSelector availableRovers={roverNames} on:change={setRover} />
 
     {#if roverName}
         <RoverManifest {roverName} on:message={handleMessage} />

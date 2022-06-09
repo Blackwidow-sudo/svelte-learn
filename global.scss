@@ -1,3 +1,11 @@
+@mixin inputs {
+    background-color: #fff;
+    border: 1px solid #8754da;
+    border-radius: 5px;
+    padding: 5px 10px;
+    line-height: 1rem;
+}
+
 *,
 *::before,
 *::after {
@@ -17,20 +25,21 @@ body {
     background-attachment: fixed;
 }
 
-input {
-    border: 1px solid #8754da;
-    border-radius: 5px;
-    padding: 5px 10px;
-    line-height: 1rem;
+input,
+button,
+select {
+    @include inputs();
+    text-align: center;
 }
 
+button,
 input[type="button"],
-button {
-    background-color: #fff;
+select {
+    cursor: pointer;
 }
 
-input[type="button"]:hover,
-button:hover {
+button:hover,
+input[type="button"]:hover {
     cursor: pointer;
     background-color: #eadcff;
 }
