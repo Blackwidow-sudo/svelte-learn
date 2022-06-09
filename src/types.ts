@@ -64,7 +64,7 @@ type RoverPhotos = Photo[];
 
 type DateString = string;
 
-export {
+export type {
     RoverName,
     CamAbbr,
     RoverInformation,
