@@ -11,12 +11,12 @@
 
     export let roverName: RoverName;
 
-    const dispatch = createEventDispatcher()
+    const dispatch = createEventDispatcher();
     const sendError = (msg: string) => {
-        dispatch("message", {
-            text: msg
-        })
-    }
+        dispatch('message', {
+            text: msg,
+        });
+    };
 
     // Old technique without store
     const getManifest = async (name: RoverName): Promise<RoverManifest> => {
@@ -35,11 +35,11 @@
             return manifest;
         } catch (error: unknown) {
             if (error instanceof Error) {
-                console.error(error.message)
+                console.error(error.message);
             } else {
-                console.error(error)
+                console.error(error);
             }
-            sendError("Could not fetch Manifest from the NASA API.")
+            sendError('Could not fetch Manifest from the NASA API.');
         }
     };
 
@@ -73,7 +73,7 @@
         <h3>{capitalize(manifest.name)}</h3>
         <table>
             {#each Object.entries(manifest) as [key, value]}
-                {#if key !== 'photos'}
+                {#if key !== 'photos' && key !== 'name'}
                     <tr>
                         <th>{capitalize(key).replace('_', ' ')}</th>
                         <td>{value}</td>
@@ -81,7 +81,7 @@
                 {/if}
             {/each}
         </table>
-        <PhotoSearchForm {manifest} on:message/>
+        <PhotoSearchForm {manifest} on:message />
     {/await}
 </div>
 
