@@ -1,5 +1,26 @@
 import type { RoverManifest, RoverName } from 'src/types';
 import { isManifest } from './typeGuards';
+import { cameraDescriptions, availableCams } from '../globals';
+
+function getRoverCams(name: RoverName): {[camAbbr: string]: string} {
+    const err = new Error("No Cams available for the given RoverName.")
+    const roverCams = {}
+    const availCams = availableCams[name.toLowerCase()]
+
+    if (typeof availCams === "undefined" || availCams.length === 0) {
+        throw err
+    }
+    
+    availCams.forEach(cam => {
+        roverCams[cam] = cameraDescriptions[cam]
+    })
+
+    if (Object.keys(roverCams).length === 0) {
+        throw err
+    }
+
+    return roverCams
+}
 
 function capitalize(str: string) {
     if (str.length === 0) {
@@ -43,4 +64,4 @@ class SessionStore {
     }
 }
 
-export { capitalize, SessionStore };
+export { capitalize, SessionStore, getRoverCams };
