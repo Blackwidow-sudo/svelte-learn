@@ -5,22 +5,18 @@
     Messages are received by the `infoMsg` store.
  -->
 <script lang="ts">
-    import { infoMsg } from '../stores/stores';
+    import { infoMsg } from '../stores';
 
     let msg: string;
 
     infoMsg.subscribe((value) => {
         msg = value;
     });
-
-    const handleClick = () => {
-        infoMsg.reset();
-    };
 </script>
 
 {#if msg}
     <!-- Forward the Event to the Component that mounts this component -->
-    <div class="info-popover" on:click={handleClick}>
+    <div class="info-popover" on:click={() => infoMsg.reset()}>
         <div id="message-box">
             <h3>Info</h3>
             <p>{msg}</p>

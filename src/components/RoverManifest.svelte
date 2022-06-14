@@ -5,7 +5,7 @@
     import NasaAPI from '../lib/NasaAPI';
     import { capitalize, SessionStore } from '../lib/utils';
 
-    import { infoMsg } from '../stores/stores';
+    import { infoMsg } from '../stores';
 
     const DEBUG = true;
 
@@ -32,6 +32,7 @@
             } else {
                 console.error(error);
             }
+            // Show InfoPopover when fetch fails
             infoMsg.show('Could not fetch Manifest from the NASA API');
         }
     };

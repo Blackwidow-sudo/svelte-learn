@@ -2,7 +2,7 @@
     import type { RoverName } from './types';
     import { roverNames } from './globals';
     import { capitalize } from './lib/utils';
-    import { infoMsg } from './stores/stores';
+    import { infoMsg } from './stores';
 
     import InfoPopover from './components/InfoPopover.svelte';
     import RoverManifest from './components/RoverManifest.svelte';
@@ -16,10 +16,6 @@
 
         roverName = capitalize(selectedOption.value) as RoverName;
     };
-
-    const testErr = () => {
-        infoMsg.show('Error works 😁');
-    };
 </script>
 
 <main>
@@ -29,7 +25,7 @@
         <RoverManifest {roverName} />
     {/if}
 
-    <button on:click={testErr}>Open Popover</button>
+    <button on:click={() => infoMsg.show('Popover works 😁')}>Open Popover</button>
     <InfoPopover />
 </main>
 

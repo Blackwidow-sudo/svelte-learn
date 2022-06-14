@@ -12,7 +12,7 @@ function createManifest() {
 }
 
 function createMessage() {
-    const { subscribe, set } = writable('');
+    const { subscribe, set, update } = writable('');
 
     return {
         subscribe,
