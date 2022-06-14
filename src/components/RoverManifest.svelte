@@ -1,22 +1,15 @@
 <script lang="ts">
     import type { RoverManifest, RoverName } from 'src/types';
 
-    import { createEventDispatcher } from 'svelte';
-
     import PhotoSearchForm from './PhotoSearchForm.svelte';
     import NasaAPI from '../lib/NasaAPI';
     import { capitalize, SessionStore } from '../lib/utils';
 
+    import { infoMsg } from '../stores/stores';
+
     const DEBUG = true;
 
     export let roverName: RoverName;
-
-    const dispatch = createEventDispatcher();
-    const sendError = (msg: string) => {
-        dispatch('message', {
-            text: msg,
-        });
-    };
 
     // Old technique without store
     const getManifest = async (name: RoverName): Promise<RoverManifest> => {
@@ -39,7 +32,7 @@
             } else {
                 console.error(error);
             }
-            sendError('Could not fetch Manifest from the NASA API.');
+            infoMsg.show('Could not fetch Manifest from the NASA API');
         }
     };
 

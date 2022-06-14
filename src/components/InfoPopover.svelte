@@ -1,11 +1,26 @@
+<!-- 
+    @component 
+
+    Renders a Info-Message as an Overlay on the Site.
+    Messages are received by the `infoMsg` store.
+ -->
 <script lang="ts">
-    export let showPopover: boolean = false;
-    export let msg: string = 'No Message available';
+    import { infoMsg } from '../stores/stores';
+
+    let msg: string;
+
+    infoMsg.subscribe((value) => {
+        msg = value;
+    });
+
+    const handleClick = () => {
+        infoMsg.reset();
+    };
 </script>
 
-{#if showPopover}
+{#if msg}
     <!-- Forward the Event to the Component that mounts this component -->
-    <div class="info-popover" on:click>
+    <div class="info-popover" on:click={handleClick}>
         <div id="message-box">
             <h3>Info</h3>
             <p>{msg}</p>

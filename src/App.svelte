@@ -1,14 +1,12 @@
 <script lang="ts">
     import type { RoverName } from './types';
-    import { createEventDispatcher } from 'svelte';
+    import { roverNames } from './globals';
+    import { capitalize } from './lib/utils';
+    import { infoMsg } from './stores/stores';
+
     import InfoPopover from './components/InfoPopover.svelte';
     import RoverManifest from './components/RoverManifest.svelte';
     import RoverSelector from './components/RoverSelector.svelte';
-    import { roverNames } from './globals';
-    import { capitalize } from './lib/utils';
-
-    let showPopover = false;
-    let popoverMessage: string;
 
     let roverName: RoverName;
 
@@ -19,13 +17,8 @@
         roverName = capitalize(selectedOption.value) as RoverName;
     };
 
-    const togglePopover = (e: Event) => {
-        showPopover = !showPopover;
-    };
-
-    const handleMessage = (e: CustomEvent) => {
-        popoverMessage = e.detail.text;
-        togglePopover(e);
+    const testErr = () => {
+        infoMsg.show('Error works 😁');
     };
 </script>
 
@@ -33,12 +26,11 @@
     <RoverSelector availableRovers={roverNames} on:change={setRover} />
 
     {#if roverName}
-        <RoverManifest {roverName} on:message={handleMessage} />
+        <RoverManifest {roverName} />
     {/if}
 
-    <!-- handle the forwarded event -->
-    <button on:click={togglePopover}>Open Popover</button>
-    <InfoPopover {showPopover} msg={popoverMessage} on:click={togglePopover} />
+    <button on:click={testErr}>Open Popover</button>
+    <InfoPopover />
 </main>
 
 <style lang="scss">
