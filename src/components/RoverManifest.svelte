@@ -5,14 +5,14 @@
     import NasaAPI from '../lib/NasaAPI';
     import { capitalize, SessionStore } from '../lib/utils';
 
-    import { infoMsg } from '../stores';
+    import { overlayMessage } from '../stores';
 
     const DEBUG = true;
 
     export let roverName: RoverName;
 
-    // Old technique without store
     const getManifest = async (name: RoverName): Promise<RoverManifest> => {
+        // try to get the manifest from storage
         let manifest = SessionStore.get(name);
 
         if (manifest) {
@@ -20,11 +20,13 @@
             return manifest;
         }
 
+        // else fetch it and save it in storage
         try {
             manifest = await NasaAPI.fetchManifest(name);
             SessionStore.set(manifest);
 
             DEBUG && console.log('Return Manifest from API');
+
             return manifest;
         } catch (error: unknown) {
             if (error instanceof Error) {
@@ -32,31 +34,11 @@
             } else {
                 console.error(error);
             }
-            // Show InfoPopover when fetch fails
-            infoMsg.show('Could not fetch Manifest from the NASA API');
+
+            // Show Error in Overlay when fetch fails
+            overlayMessage.show('Error', 'Could not fetch Manifest from the NASA API');
         }
     };
-
-    // ManifestStore.subscribe((data: RoverManifest) => {
-    //     manifest = data;
-    // });
-
-    // onMount(async () => {
-    //     const tmp = SessionStore.get(roverName);
-
-    //     if (tmp) {
-    //         manifest = tmp;
-    //         console.log(`Got ${manifest.name} Manifest from sessionStorage.`);
-    //         return; // early
-    //     }
-
-    //     try {
-    //         manifest = await NasaAPI.fetchManifest(roverName);
-    //         console.log(`Got ${manifest.name} Manifest from API.`);
-    //     } catch (err: unknown) {
-    //         throw err;
-    //     }
-    // });
 </script>
 
 <div class="rover-manifest">

@@ -7,24 +7,56 @@
     export let manifest: RoverManifest;
 
     let roverCameras = getRoverCams(manifest.name);
+
+    const handleSubmit = (e: Event) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target as HTMLFormElement);
+        const formProps = Object.fromEntries(formData);
+
+        console.log(formProps);
+
+        return false;
+    };
 </script>
 
-<div class="form">
+<form on:submit={handleSubmit}>
     <DayInput {manifest} selectedDay="0" />
 
-    <label for="pages"> Pages (25 items per page): </label>
-    <input type="number" min="0" max="10" id="pages" placeholder="1" value="1" />
+    <div>
+        <label for="pages">Pages (25 items per page):</label>
+        <input
+            type="number"
+            name="pages"
+            id="pages"
+            min="0"
+            max="10"
+            placeholder="1"
+            value="1"
+        />
+    </div>
+
     <CameraSelector {roverCameras} />
 
-    <input type="button" name="submit" id="submit" value="Search Photos" />
-</div>
+    <input type="submit" name="submit" id="submit" value="Search Photos" />
+</form>
 
 <style lang="scss">
-    .form {
+    form {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 5px;
+    }
+
+    div {
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         gap: 5px;
     }
 </style>

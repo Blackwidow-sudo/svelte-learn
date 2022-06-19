@@ -1,25 +1,48 @@
-import type { RoverManifest } from 'src/types';
 import { writable } from 'svelte/store';
+import type { CamAbbr, DateString, RoverName, Sol } from './types';
 
-function createManifest() {
-    const { subscribe, set, update } = writable();
+interface OverlayMessage {
+    title: string;
+    message: string;
+}
 
-    return {
-        subscribe,
-        set: (mani: RoverManifest) => set(mani),
-        reset: () => set(null),
-    };
+interface SearchFormData {
+    rover: RoverName;
+    date: Sol | DateString;
+    camera: CamAbbr;
+    page: number;
 }
 
 function createMessage() {
-    const { subscribe, set, update } = writable('');
+    const { subscribe, set, update } = writable<OverlayMessage>({
+        title: '',
+        message: '',
+    });
 
     return {
         subscribe,
-        show: (msg: string) => set(msg),
-        reset: () => set(''),
+        show: (title: string, message: string) => {
+            set({ title, message });
+        },
+        reset: () => set({ title: '', message: '' }),
     };
 }
 
-export const ManifestStore = createManifest();
-export const infoMsg = createMessage();
+// TODO
+function createFormData() {
+    const { subscribe, set, update } = writable<SearchFormData>();
+
+    return {
+        subscribe,
+        update: (val: { [key: string]: string | number }) =>
+            update((fd: SearchFormData) => {
+                return {
+                    ...fd,
+                    ...val,
+                };
+            }),
+    };
+}
+
+export const overlayMessage = createMessage();
+export const formData = createFormData();

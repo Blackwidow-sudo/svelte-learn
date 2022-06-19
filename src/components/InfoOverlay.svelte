@@ -1,25 +1,28 @@
-<!-- 
-    @component 
-
-    Renders a Info-Message as an Overlay on the Site.
-    Messages are received by the `infoMsg` store.
- -->
 <script lang="ts">
-    import { infoMsg } from '../stores';
+    import { overlayMessage } from '../stores';
 
-    let msg: string;
+    let title: string;
+    let message: string;
 
-    infoMsg.subscribe((value) => {
-        msg = value;
+    overlayMessage.subscribe((msg) => {
+        title = msg.title;
+        message = msg.message;
     });
 </script>
 
-{#if msg}
+<!-- 
+    @component
+    Component that renders an Overlay on the site to show a feedback message to the user.
+
+    Usage:
+    This component is controlled by a store that sets the `title` and `message` properties.
+ -->
+{#if title && message}
     <!-- Forward the Event to the Component that mounts this component -->
-    <div class="info-popover" on:click={() => infoMsg.reset()}>
+    <div class="info-popover" on:click={() => overlayMessage.reset()}>
         <div id="message-box">
-            <h3>Info</h3>
-            <p>{msg}</p>
+            <h3>{title}</h3>
+            <p>{message}</p>
         </div>
         <span>Click anywhere to close this message</span>
     </div>

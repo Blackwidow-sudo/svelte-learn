@@ -1,16 +1,20 @@
-type RoverName = "Curiosity" | "Opportunity" | "Spirit";
-type Status = "active" | "complete";
+type RoverName = 'Curiosity' | 'Opportunity' | 'Spirit';
+type Status = 'active' | 'complete';
 
 type CamAbbr =
-    | "FHAZ"
-    | "RHAZ"
-    | "MAST"
-    | "CHEMCAM"
-    | "MAHLI"
-    | "MARDI"
-    | "NAVCAM"
-    | "PANCAM"
-    | "MINITES";
+    | 'FHAZ'
+    | 'RHAZ'
+    | 'MAST'
+    | 'CHEMCAM'
+    | 'MAHLI'
+    | 'MARDI'
+    | 'NAVCAM'
+    | 'PANCAM'
+    | 'MINITES';
+
+type CamDesc = {
+    [K in CamAbbr]: string;
+};
 
 interface RoverInformation {
     landing_date: string;
@@ -62,11 +66,15 @@ interface UserInputs {
 
 type RoverPhotos = Photo[];
 
-type DateString = string;
+type Sol = number;
+
+type DateString =
+    `${number}${number}${number}${number}-${number}${number}-${number}${number}`;
 
 export type {
     RoverName,
     CamAbbr,
+    CamDesc,
     RoverInformation,
     RoverManifest,
     Photo,
@@ -76,4 +84,5 @@ export type {
     AvailableCams,
     UserInputs,
     DateString,
+    Sol,
 };

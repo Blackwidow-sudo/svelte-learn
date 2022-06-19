@@ -2,9 +2,9 @@
     import type { RoverName } from './types';
     import { roverNames } from './globals';
     import { capitalize } from './lib/utils';
-    import { infoMsg } from './stores';
+    import { overlayMessage } from './stores';
 
-    import InfoPopover from './components/InfoPopover.svelte';
+    import InfoOverlay from './components/InfoOverlay.svelte';
     import RoverManifest from './components/RoverManifest.svelte';
     import RoverSelector from './components/RoverSelector.svelte';
 
@@ -25,8 +25,10 @@
         <RoverManifest {roverName} />
     {/if}
 
-    <button on:click={() => infoMsg.show('Popover works 😁')}>Open Popover</button>
-    <InfoPopover />
+    <button on:click={() => overlayMessage.show('Info', 'Popover works 😁')}>
+        Open Popover
+    </button>
+    <InfoOverlay />
 </main>
 
 <style lang="scss">

@@ -22,24 +22,23 @@
     const updateDay = (e: Event) => {
         const inputEl = e.target as HTMLInputElement;
         selectedDay = inputEl.value;
-        console.log(selectedDay);
     };
 </script>
 
 <div class="container">
     <div class="radiogroup" role="radiogroup" on:change={switchInput}>
         <label for="sol">
-            <input type="radio" name="solOrDate" id="sol" value="sol" checked />
+            <input type="radio" name="dateFormat" id="sol" value="sol" checked />
             By Martian sol
         </label>
         <label for="date">
-            <input type="radio" name="solOrDate" id="date" value="date" />
+            <input type="radio" name="dateFormat" id="date" value="date" />
             By Earth date
         </label>
     </div>
     <input
         type="number"
-        name="solOrDay"
+        name="date"
         id="day-input"
         placeholder={manifest.max_sol.toString()}
         on:change={updateDay}
@@ -58,6 +57,6 @@
 
     #day-input {
         text-align: center;
-        letter-spacing: .2rem;
+        letter-spacing: 0.2rem;
     }
 </style>
