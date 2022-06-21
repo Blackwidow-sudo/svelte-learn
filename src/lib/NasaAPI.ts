@@ -2,28 +2,19 @@ import type { CamAbbr, Photo, RoverManifest, RoverName } from '../types';
 import { isArrOfPhotos, isManifest } from './typeGuards';
 
 export default class NasaAPI {
-    private static _demoKey = 'DEMO_KEY';
-    private static _baseUrl = 'https://api.nasa.gov/mars-photos/api/v1';
-    private static _roversUrl = this._baseUrl.concat('/rovers');
-    private static _manifestsUrl = this._baseUrl.concat('/manifests');
+    private static _demoApiKey = 'DEMO_KEY';
+    private static _baseURL = new URL('https://api.nasa.gov');
 
     public static async fetchManifest(
         roverName: RoverName,
-        apiKey?: string
+        apiKey: string = this._demoApiKey
     ): Promise<RoverManifest> {
-        const params = new URLSearchParams();
-        const roverParam = `/${roverName.toLowerCase()}?`;
+        const url = new URL(`mars-photos/api/v1/manifests/${roverName}`, this._baseURL);
 
-        if (typeof apiKey !== 'undefined') {
-            params.append('api_key', apiKey);
-        } else {
-            params.append('api_key', this._demoKey);
-        }
+        url.searchParams.append('api_key', apiKey);
 
         try {
-            const response = await fetch(
-                this._manifestsUrl.concat(roverParam, params.toString())
-            );
+            const response = await fetch(url);
             const data = await response.json();
 
             if (!isManifest(data.photo_manifest)) {
@@ -41,32 +32,24 @@ export default class NasaAPI {
         cam: CamAbbr,
         solOrDate: number | string,
         page: number = 1,
-        apiKey?: string
+        apiKey: string = this._demoApiKey
     ): Promise<Photo[] | undefined> {
-        const params = new URLSearchParams();
-        const roverParam = `/${roverName}/photos?`;
+        const url = new URL(`mars-photos/api/v1/${roverName}/photos`, this._baseURL);
+
+        url.searchParams.append('api_key', apiKey);
+        url.searchParams.append('camera', cam);
+        url.searchParams.append('page', page.toString());
 
         if (typeof solOrDate === 'number') {
-            params.append('sol', solOrDate.toString());
+            url.searchParams.append('sol', solOrDate.toString());
         } else if (!isNaN(Date.parse(solOrDate))) {
-            params.append('earth_date', solOrDate);
+            url.searchParams.append('earth_date', solOrDate);
         } else {
             throw new Error('The given Sol/Date is not valid.');
         }
 
-        params.append('camera', cam);
-        params.append('page', page.toString());
-
-        if (typeof apiKey !== 'undefined') {
-            params.append('api_key', apiKey);
-        } else {
-            params.append('api_key', this._demoKey);
-        }
-
         try {
-            const response = await fetch(
-                this._roversUrl.concat(roverParam, params.toString())
-            );
+            const response = await fetch(url);
             const data = await response.json();
 
             if (!isArrOfPhotos(data.photos)) {
