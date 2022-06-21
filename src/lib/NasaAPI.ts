@@ -11,16 +11,19 @@ export default class NasaAPI {
         roverName: RoverName,
         apiKey?: string
     ): Promise<RoverManifest> {
-        const reqParams = [`/${roverName.toLowerCase()}`];
+        const params = new URLSearchParams();
+        const roverParam = `/${roverName.toLowerCase()}?`;
 
         if (typeof apiKey !== 'undefined') {
-            reqParams.push(`?api_key=${apiKey}`);
+            params.append('api_key', apiKey);
         } else {
-            reqParams.push(`?api_key=${this._demoKey}`);
+            params.append('api_key', this._demoKey);
         }
 
         try {
-            const response = await fetch(this._manifestsUrl.concat(...reqParams));
+            const response = await fetch(
+                this._manifestsUrl.concat(roverParam, params.toString())
+            );
             const data = await response.json();
 
             if (!isManifest(data.photo_manifest)) {
@@ -40,28 +43,30 @@ export default class NasaAPI {
         page: number = 1,
         apiKey?: string
     ): Promise<Photo[] | undefined> {
-        const reqParams = [`/${roverName}/photos`];
+        const params = new URLSearchParams();
+        const roverParam = `/${roverName}/photos?`;
 
         if (typeof solOrDate === 'number') {
-            reqParams.push(`?sol=${solOrDate}`);
+            params.append('sol', solOrDate.toString());
         } else if (!isNaN(Date.parse(solOrDate))) {
-            reqParams.push(`?earth_date=${solOrDate}`);
+            params.append('earth_date', solOrDate);
         } else {
             throw new Error('The given Sol/Date is not valid.');
         }
 
+        params.append('camera', cam);
+        params.append('page', page.toString());
+
         if (typeof apiKey !== 'undefined') {
-            reqParams.push(`&api_key=${apiKey}`);
+            params.append('api_key', apiKey);
         } else {
-            reqParams.push(`&api_key=${this._demoKey}`);
+            params.append('api_key', this._demoKey);
         }
 
-        reqParams.push(`&camera=${cam}`);
-        reqParams.push(`&page=${page}`);
-        reqParams.push(`&${this._demoKey}`);
-
         try {
-            const response = await fetch(this._roversUrl.concat(...reqParams));
+            const response = await fetch(
+                this._roversUrl.concat(roverParam, params.toString())
+            );
             const data = await response.json();
 
             if (!isArrOfPhotos(data.photos)) {
