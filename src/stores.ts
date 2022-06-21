@@ -34,11 +34,11 @@ function createFormData() {
 
     return {
         subscribe,
-        update: (val: { [key: string]: string | number }) =>
-            update((fd: SearchFormData) => {
+        setProps: (props: Partial<SearchFormData>) =>
+            update((prev: SearchFormData) => {
                 return {
-                    ...fd,
-                    ...val,
+                    ...prev,
+                    ...props,
                 };
             }),
     };

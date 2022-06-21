@@ -11,8 +11,8 @@
     const handleSubmit = (e: Event) => {
         e.preventDefault();
 
-        const formData = new FormData(e.target as HTMLFormElement);
-        const formProps = Object.fromEntries(formData);
+        const fd = new FormData(e.target as HTMLFormElement);
+        const formProps = Object.fromEntries(fd);
 
         console.log(formProps);
 
