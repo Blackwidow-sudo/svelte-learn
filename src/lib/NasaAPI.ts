@@ -34,7 +34,10 @@ export default class NasaAPI {
         page: number = 1,
         apiKey: string = this._demoApiKey
     ): Promise<Photo[] | undefined> {
-        const url = new URL(`mars-photos/api/v1/${roverName}/photos`, this._baseURL);
+        const url = new URL(
+            `mars-photos/api/v1/rovers/${roverName.toLowerCase()}/photos`,
+            this._baseURL
+        );
 
         url.searchParams.append('api_key', apiKey);
         url.searchParams.append('camera', cam);
@@ -52,8 +55,10 @@ export default class NasaAPI {
             const response = await fetch(url);
             const data = await response.json();
 
+            // Doesn't work as intended: Errors when API responds with no images
             if (!isArrOfPhotos(data.photos)) {
-                throw new Error("NASA-API didn't return an Array of Photos.");
+                console.warn('No Photos found.');
+                // throw new Error("NASA-API didn't return an Array of Photos.");
             }
 
             return data.photos as Photo[];

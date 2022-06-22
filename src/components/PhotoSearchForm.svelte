@@ -1,8 +1,9 @@
 <script lang="ts">
-    import type { RoverManifest } from '../types';
+    import type { CamAbbr, DateString, RoverManifest } from '../types';
     import CameraSelector from './CameraSelector.svelte';
     import DayInput from './DayInput.svelte';
     import { getRoverCams } from '../lib/utils';
+    import { formDataStore } from '../stores';
 
     export let manifest: RoverManifest;
 
@@ -14,7 +15,15 @@
         const fd = new FormData(e.target as HTMLFormElement);
         const formProps = Object.fromEntries(fd);
 
-        console.log(formProps);
+        formDataStore.set({
+            rover: manifest.name,
+            camera: formProps.camera as CamAbbr,
+            page: parseInt(formProps.pages as string),
+            date:
+                formProps.dateFormat === 'sol'
+                    ? parseInt(formProps.date as string)
+                    : (formProps.date as DateString),
+        });
 
         return false;
     };

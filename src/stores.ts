@@ -29,20 +29,20 @@ function createMessage() {
 }
 
 // TODO
-function createFormData() {
-    const { subscribe, set, update } = writable<SearchFormData>();
+// function createFormData() {
+//     const { subscribe, set, update } = writable<SearchFormData>();
 
-    return {
-        subscribe,
-        setProps: (props: Partial<SearchFormData>) =>
-            update((prev: SearchFormData) => {
-                return {
-                    ...prev,
-                    ...props,
-                };
-            }),
-    };
-}
+//     return {
+//         subscribe,
+//         setProps: (props: Partial<SearchFormData>) =>
+//             update((prev: SearchFormData) => {
+//                 return {
+//                     ...prev,
+//                     ...props,
+//                 };
+//             }),
+//     };
+// }
 
 export const overlayMessage = createMessage();
-export const formData = createFormData();
+export const formDataStore = writable<SearchFormData>();

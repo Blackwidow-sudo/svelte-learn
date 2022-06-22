@@ -7,6 +7,7 @@
     import InfoOverlay from './components/InfoOverlay.svelte';
     import RoverManifest from './components/RoverManifest.svelte';
     import RoverSelector from './components/RoverSelector.svelte';
+    import PhotoCollection from './components/PhotoCollection.svelte';
 
     let roverName: RoverName;
 
@@ -19,11 +20,17 @@
 </script>
 
 <main>
-    <RoverSelector availableRovers={roverNames} on:change={setRover} />
+    <div id="selectWindow">
+        <RoverSelector availableRovers={roverNames} on:change={setRover} />
 
-    {#if roverName}
-        <RoverManifest {roverName} />
-    {/if}
+        {#if roverName}
+            <RoverManifest {roverName} />
+        {/if}
+    </div>
+
+    <div id="outputWindow">
+        <PhotoCollection />
+    </div>
 
     <button on:click={() => overlayMessage.show('Info', 'Popover works 😁')}>
         Open Popover
@@ -37,6 +44,17 @@
 
     :root {
         font-family: $std-font;
+    }
+
+    #selectWindow {
+        display: inline-block;
+        width: 50%;
+    }
+
+    #outputWindow {
+        display: inline-block;
+        width: 50vw;
+        height: 100vh;
     }
 
     /* Temporary styles */
