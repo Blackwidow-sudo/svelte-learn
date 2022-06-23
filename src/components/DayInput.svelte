@@ -41,7 +41,7 @@
         name="date"
         id="day-input"
         placeholder={manifest.max_sol.toString()}
-        on:change={updateDay}
+        on:input={updateDay}
     />
 </div>
 

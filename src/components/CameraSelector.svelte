@@ -1,16 +1,18 @@
 <script lang="ts">
     export let roverCameras: { [abbr: string]: string };
-
-    const handleChange = () => {};
 </script>
 
 <div>
     <label for="camera">Camera:</label>
-    <select name="camera" id="camera" on:change={handleChange}>
-        <option value="none" disabled selected>Select a Camera</option>
-        {#each Object.entries(roverCameras) as [camera, description]}
-            <option value={camera.toLowerCase()} title={description}>{camera}</option>
-        {/each}
+    <select name="camera" id="camera">
+        {#if roverCameras}
+            <option value="none" disabled selected>Select a Camera</option>
+            {#each Object.entries(roverCameras) as [camera, description]}
+                <option value={camera.toLowerCase()} title={description}>{camera}</option>
+            {/each}
+        {:else}
+            <option value="none" disabled selected>No Cameras available</option>
+        {/if}
     </select>
 </div>
 

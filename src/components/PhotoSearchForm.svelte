@@ -2,35 +2,35 @@
     import type { CamAbbr, DateString, RoverManifest } from '../types';
     import CameraSelector from './CameraSelector.svelte';
     import DayInput from './DayInput.svelte';
-    import { getRoverCams } from '../lib/utils';
     import { formDataStore } from '../stores';
     import { cameraDescriptions } from '../globals';
 
     export let manifest: RoverManifest;
 
-    let selectedDay: string | number;
-    let roverCameras = getRoverCams(manifest.name);
+    let selectedDay: string | number = 0;
+    $: roverCameras = getAvailableCameras(selectedDay);
 
-    // Does not work
-    $: selectedDay &&
-        function () {
-            const photosInfo = manifest.photos.find((photo) => {
-                if (photo.sol === selectedDay || photo.earth_date === selectedDay) {
-                    return true;
-                }
-                return false;
+    function getAvailableCameras(day: number | string) {
+        console.log(manifest.photos);
+        const dayInfo = manifest.photos.find((photo) => {
+            if (photo.earth_date === day || photo.sol == day) {
+                return true;
+            }
+            return false;
+        });
+
+        const availCams = {};
+
+        if (dayInfo) {
+            dayInfo.cameras.forEach((cam) => {
+                availCams[cam] = cameraDescriptions[cam];
             });
 
-            // Get and set rovercams
-            const cams = photosInfo.cameras;
-            const descriptions = {};
+            return availCams;
+        }
 
-            cams.forEach((cam) => {
-                descriptions[cam] = cameraDescriptions[cam];
-            });
-
-            roverCameras = descriptions;
-        };
+        return undefined;
+    }
 
     const handleSubmit = (e: Event) => {
         e.preventDefault();
@@ -53,7 +53,7 @@
 </script>
 
 <form on:submit={handleSubmit}>
-    <DayInput {manifest} {selectedDay} />
+    <DayInput {manifest} bind:selectedDay />
 
     <div>
         <label for="pages">Pages (25 items per page):</label>
