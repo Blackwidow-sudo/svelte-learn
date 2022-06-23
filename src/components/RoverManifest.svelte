@@ -16,7 +16,7 @@
         let manifest = SessionStore.get(name);
 
         if (manifest) {
-            DEBUG && console.log('Return Manifest from storage');
+            DEBUG && console.log('Return Manifest from storage', manifest);
             return manifest;
         }
 
@@ -25,7 +25,7 @@
             manifest = await NasaAPI.fetchManifest(name);
             SessionStore.set(manifest);
 
-            DEBUG && console.log('Return Manifest from API');
+            DEBUG && console.log('Return Manifest from API', manifest);
 
             return manifest;
         } catch (error: unknown) {

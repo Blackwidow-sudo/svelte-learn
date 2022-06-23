@@ -4,10 +4,33 @@
     import DayInput from './DayInput.svelte';
     import { getRoverCams } from '../lib/utils';
     import { formDataStore } from '../stores';
+    import { cameraDescriptions } from '../globals';
 
     export let manifest: RoverManifest;
 
+    let selectedDay: string | number;
     let roverCameras = getRoverCams(manifest.name);
+
+    // Does not work
+    $: selectedDay &&
+        function () {
+            const photosInfo = manifest.photos.find((photo) => {
+                if (photo.sol === selectedDay || photo.earth_date === selectedDay) {
+                    return true;
+                }
+                return false;
+            });
+
+            // Get and set rovercams
+            const cams = photosInfo.cameras;
+            const descriptions = {};
+
+            cams.forEach((cam) => {
+                descriptions[cam] = cameraDescriptions[cam];
+            });
+
+            roverCameras = descriptions;
+        };
 
     const handleSubmit = (e: Event) => {
         e.preventDefault();
@@ -30,7 +53,7 @@
 </script>
 
 <form on:submit={handleSubmit}>
-    <DayInput {manifest} selectedDay="0" />
+    <DayInput {manifest} {selectedDay} />
 
     <div>
         <label for="pages">Pages (25 items per page):</label>

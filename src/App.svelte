@@ -46,16 +46,35 @@
         font-family: $std-font;
     }
 
+    main {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        grid-auto-rows: 100vh;
+    }
+
     #selectWindow {
-        display: inline-block;
-        width: 50%;
+        grid-column: 1 / 2;
+        grid-row: 1;
+
+        position: fixed;
     }
 
     #outputWindow {
-        display: inline-block;
-        width: 50vw;
-        height: 100vh;
+        grid-column: 2 / 2;
+        grid-row: 1;
     }
+
+    // #selectWindow {
+    //     position: fixed;
+    //     display: inline-block;
+    //     width: 50%;
+    // }
+
+    // #outputWindow {
+    //     max-width: 50vw;
+    //     float: right;
+    // }
 
     /* Temporary styles */
     button {

@@ -25,8 +25,15 @@ interface RoverInformation {
 
 interface RoverManifest extends RoverInformation {
     launch_date: string;
-    photos: object[];
+    photos: PhotosInfo[];
     status: Status;
+    total_photos: number;
+}
+
+interface PhotosInfo {
+    cameras: CamAbbr[];
+    earth_date: DateString;
+    sol: number;
     total_photos: number;
 }
 
