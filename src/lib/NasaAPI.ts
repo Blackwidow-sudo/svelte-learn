@@ -9,7 +9,10 @@ export default class NasaAPI {
         roverName: RoverName,
         apiKey: string = this._demoApiKey
     ): Promise<RoverManifest> {
-        const url = new URL(`mars-photos/api/v1/manifests/${roverName}`, this._baseURL);
+        const url = new URL(
+            `mars-photos/api/v1/manifests/${roverName.toLowerCase()}`,
+            this._baseURL
+        );
 
         url.searchParams.append('api_key', apiKey);
 

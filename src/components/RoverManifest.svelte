@@ -7,7 +7,7 @@
 
     import { overlayMessage } from '../stores';
 
-    const DEBUG = true;
+    const DEBUG = false;
 
     export let roverName: RoverName;
 
@@ -46,7 +46,7 @@
     {#await getManifest(roverName)}
         <span>...loading</span>
     {:then manifest}
-        <h3>{capitalize(manifest.name)}</h3>
+        <h2>{capitalize(manifest.name)}</h2>
         <table>
             {#each Object.entries(manifest) as [key, value]}
                 {#if key !== 'photos' && key !== 'name'}
@@ -69,7 +69,7 @@
 
         background-color: #c5d3ff;
 
-        h3 {
+        h2 {
             text-align: center;
         }
 
